@@ -11,38 +11,6 @@ defmodule InterviewPlannerWeb.MeetingLive.WeekListingComponent do
      |> assign(:available_week_days, available_week_days())}
   end
 
-  @impl true
-  def handle_event(
-        "selected_hour",
-        %{"formatted-hour" => formatted_hour, "day-name" => day_name},
-        socket
-      ) do
-    {
-      :noreply,
-      assign(socket, :selected_hour, formatted_hour)
-      |> assign(:available_week_days, update_week_days(formatted_hour, day_name, socket))
-    }
-  end
-
-  defp update_week_days(formatted_hour, day_name, %{
-         assigns: %{available_week_days: current_week_days}
-       }) do
-    current_week_days
-    |> Enum.map(fn %{day_name: week_day_name} = week_day ->
-      %{
-        week_day
-        | available_week_hours:
-            week_day.available_week_hours
-            |> Enum.map(fn %{formatted: week_hour_formatted, naive_date_time: naive_date_dt} ->
-              init_week_hour(naive_date_dt, %{
-                available_week_hour:
-                  week_hour_formatted == formatted_hour && week_day_name == day_name
-              })
-            end)
-      }
-    end)
-  end
-
   defp available_week_days do
     with current_date <- Date.utc_today(),
          first_day_of_week <- Date.beginning_of_week(current_date),
@@ -82,9 +50,10 @@ defmodule InterviewPlannerWeb.MeetingLive.WeekListingComponent do
   end
 
   defp init_week_hour(naive_date_dt, opts \\ %{}) do
-    with available <- Map.get(opts, :available_week_hour, false) do
+    with available <- Map.get(opts, :available_week_hour, true) do
       %WeekDayHour{
         naive_date_time: naive_date_dt,
+        iso: NaiveDateTime.to_iso8601(naive_date_dt, :basic),
         formatted: Calendar.strftime(naive_date_dt, "%H %M"),
         available: available
       }

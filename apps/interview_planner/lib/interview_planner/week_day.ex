@@ -1,5 +1,5 @@
 defmodule InterviewPlanner.WeekDayHour do
-  defstruct naive_date_time: nil, formatted: "12:00 AM", available: true
+  defstruct naive_date_time: nil, formatted: "12:00 AM", available: true, iso: nil
 end
 
 defmodule InterviewPlanner.WeekDay do

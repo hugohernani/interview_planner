@@ -5,7 +5,7 @@ defmodule InterviewPlannerWeb.MeetingLive.WeekdayComponent do
   # alias Timex.Interval
 
   @impl true
-  def update(%{week_day: _week_day}, socket) do
-    {:ok, socket}
+  def update(%{week_day: wd}, socket) do
+    {:ok, assign(socket, :week_day, wd)}
   end
 end
