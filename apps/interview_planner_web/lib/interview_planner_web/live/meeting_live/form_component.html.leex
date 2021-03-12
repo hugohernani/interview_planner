@@ -1,0 +1,18 @@
+<h2><%= @title %></h2>
+
+<%= f = form_for @changeset, "#",
+  id: "meeting-form",
+  phx_target: @myself,
+  phx_change: "validate",
+  phx_submit: "save" %>
+
+  <%= label f, :scheduled_at %>
+  <%= datetime_select f, :scheduled_at %>
+  <%= error_tag f, :scheduled_at %>
+
+  <%= label f, :notes %>
+  <%= text_input f, :notes %>
+  <%= error_tag f, :notes %>
+
+  <%= submit "Save", phx_disable_with: "Saving..." %>
+</form>

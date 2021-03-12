@@ -1,0 +1,39 @@
+<h1>Listing Meetings</h1>
+
+<%= if @live_action in [:new, :edit] do %>
+  <%= live_modal @socket, InterviewPlannerWeb.MeetingLive.FormComponent,
+    id: @meeting.id || :new,
+    title: @page_title,
+    action: @live_action,
+    meeting: @meeting,
+    return_to: Routes.meeting_index_path(@socket, :index) %>
+<% end %>
+
+<%= live_component @socket, InterviewPlannerWeb.MeetingLive.WeekdayListingComponent, id: :listing_weekday_hours %>
+
+<table>
+  <thead>
+    <tr>
+      <th>Scheduled at</th>
+      <th>Notes</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody id="meetings">
+    <%= for meeting <- @meetings do %>
+      <tr id="meeting-<%= meeting.id %>">
+        <td><%= meeting.scheduled_at %></td>
+        <td><%= meeting.notes %></td>
+
+        <td>
+          <span><%= live_redirect "Show", to: Routes.meeting_show_path(@socket, :show, meeting) %></span>
+          <span><%= live_patch "Edit", to: Routes.meeting_index_path(@socket, :edit, meeting) %></span>
+          <span><%= link "Delete", to: "#", phx_click: "delete", phx_value_id: meeting.id, data: [confirm: "Are you sure?"] %></span>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<span><%= live_patch "New Meeting", to: Routes.meeting_index_path(@socket, :new) %></span>

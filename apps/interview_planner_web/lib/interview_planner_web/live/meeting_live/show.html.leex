@@ -1,0 +1,27 @@
+<h1>Show Meeting</h1>
+
+<%= if @live_action in [:edit] do %>
+  <%= live_modal @socket, InterviewPlannerWeb.MeetingLive.FormComponent,
+    id: @meeting.id,
+    title: @page_title,
+    action: @live_action,
+    meeting: @meeting,
+    return_to: Routes.meeting_show_path(@socket, :show, @meeting) %>
+<% end %>
+
+<ul>
+
+  <li>
+    <strong>Scheduled at:</strong>
+    <%= @meeting.scheduled_at %>
+  </li>
+
+  <li>
+    <strong>Notes:</strong>
+    <%= @meeting.notes %>
+  </li>
+
+</ul>
+
+<span><%= live_patch "Edit", to: Routes.meeting_show_path(@socket, :edit, @meeting), class: "button" %></span>
+<span><%= live_redirect "Back", to: Routes.meeting_index_path(@socket, :index) %></span>
