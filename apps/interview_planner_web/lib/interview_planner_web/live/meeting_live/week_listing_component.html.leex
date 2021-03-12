@@ -1,0 +1,7 @@
+<div class='container'>
+  <div class='row available-week-days'>
+    <%= for week_day <- @available_week_days do %>
+      <%= live_component @socket, InterviewPlannerWeb.MeetingLive.WeekdayComponent, week_day: week_day %>
+    <% end %>
+  </div>
+</div>

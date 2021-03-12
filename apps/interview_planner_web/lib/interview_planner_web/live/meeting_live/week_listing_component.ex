@@ -1,4 +1,4 @@
-defmodule InterviewPlannerWeb.MeetingLive.WeekdayListingComponent do
+defmodule InterviewPlannerWeb.MeetingLive.WeekListingComponent do
   use InterviewPlannerWeb, :live_component
 
   alias InterviewPlanner.{WeekDay, WeekDayHour}

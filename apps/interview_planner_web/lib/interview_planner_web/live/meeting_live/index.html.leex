@@ -9,7 +9,7 @@
     return_to: Routes.meeting_index_path(@socket, :index) %>
 <% end %>
 
-<%= live_component @socket, InterviewPlannerWeb.MeetingLive.WeekdayListingComponent, id: :listing_weekday_hours %>
+<%= live_component @socket, InterviewPlannerWeb.MeetingLive.WeekListingComponent, id: :listing_weekday_hours %>
 
 <table>
   <thead>
