@@ -14,7 +14,7 @@ defmodule InterviewPlanner.Planner do
   end
 
   def default_week_planner(curr_datetime) do
-    {year, week_number, _} = Timex.iso_triplet(curr_datetime)
+    {year, week_number, _} = Timex.iso_triplet(Date.end_of_week(curr_datetime, :sunday))
 
     %WeekPlanner{
       year: year,
@@ -29,7 +29,7 @@ defmodule InterviewPlanner.Planner do
   def get_week_planner!(id), do: Repo.get!(WeekPlanner, id)
 
   def get_week_planner_by_date(incoming_date) do
-    {year, week_number, _} = Timex.iso_triplet(incoming_date)
+    {year, week_number, _} = Timex.iso_triplet(Date.end_of_week(incoming_date, :sunday))
 
     WeekPlanner
     |> Repo.get_by(year: year, week_number: week_number)

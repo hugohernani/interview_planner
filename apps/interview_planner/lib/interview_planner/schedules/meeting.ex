@@ -2,9 +2,12 @@ defmodule InterviewPlanner.Schedules.Meeting do
   use Ecto.Schema
   import Ecto.Changeset
 
+  alias InterviewPlanner.Planner.WeekPlanner
+
   schema "meetings" do
     field :notes, :string
     field :scheduled_at, :naive_datetime
+    belongs_to :week_planner, WeekPlanner
 
     timestamps()
   end

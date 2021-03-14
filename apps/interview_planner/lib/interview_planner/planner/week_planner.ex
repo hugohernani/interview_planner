@@ -2,6 +2,8 @@ defmodule InterviewPlanner.Planner.WeekPlanner do
   use Ecto.Schema
   import Ecto.Changeset
 
+  alias InterviewPlanner.Schedules.Meeting
+
   schema "week_planners" do
     field :end_time, :time
     field :interval, :integer
@@ -9,6 +11,7 @@ defmodule InterviewPlanner.Planner.WeekPlanner do
     field :step, :integer
     field :week_number, :integer
     field :year, :integer
+    has_many :meetings, Meeting
 
     timestamps()
   end

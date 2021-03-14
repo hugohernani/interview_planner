@@ -14,5 +14,7 @@
   <%= text_input f, :notes %>
   <%= error_tag f, :notes %>
 
+  <%= hidden_input f, :week_planner_id, value: @week_planner_id %>
+
   <%= submit "Save", phx_disable_with: "Saving..." %>
 </form>

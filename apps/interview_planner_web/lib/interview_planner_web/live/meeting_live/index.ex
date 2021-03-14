@@ -13,19 +13,25 @@ defmodule InterviewPlannerWeb.MeetingLive.Index do
       nil ->
         {:ok, assign(socket, week_days: [], meetings: [])}
 
-      _ ->
+      %{id: week_planner_id} = week_planner ->
         {:ok,
          socket
-         |> assign(:meetings, [])
-         |> assign_new(:week_days, fn -> Schedules.week_days(curr_datetime) end)}
+         |> assign(meetings: list_meetings(), week_planner_id: week_planner_id)
+         |> assign_new(:week_days, fn ->
+           Schedules.week_days(week_planner)
+         end)}
     end
   end
 
   @impl true
-  def handle_info({Schedules, :selected_hour, week_day_hour_id}, socket) do
+  def handle_info({Schedules, :selected_hour, week_day_hour}, socket) do
     {
       :noreply,
-      apply_action(socket, :new, week_day_hour_id)
+      socket
+      |> assign(:week_planner_id, socket.assigns.week_planner_id)
+      |> apply_action(:new, %{
+        scheduled_at: week_day_hour.naive_date_time
+      })
     }
   end
 
@@ -40,11 +46,11 @@ defmodule InterviewPlannerWeb.MeetingLive.Index do
     |> assign(:meeting, Schedules.get_meeting!(id))
   end
 
-  defp apply_action(socket, :new, _params) do
+  defp apply_action(socket, :new, params) do
     socket
     |> assign(:page_title, "New Meeting")
     |> assign(:live_action, :new)
-    |> assign(:meeting, %Meeting{})
+    |> assign(:meeting, Map.merge(%Meeting{}, params))
   end
 
   defp apply_action(socket, :index, _params) do

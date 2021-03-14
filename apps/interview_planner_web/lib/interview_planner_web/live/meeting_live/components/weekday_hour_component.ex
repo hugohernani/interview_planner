@@ -4,10 +4,10 @@ defmodule InterviewPlannerWeb.MeetingLive.WeekdayHourComponent do
   alias InterviewPlanner.{Schedules}
 
   @impl true
-  def update(%{week_day_hour: week_day_hour}, socket) do
+  def update(%{week_day_hour: week_day_hour} = assigns, socket) do
     {
       :ok,
-      assign(socket, :week_day_hour, week_day_hour)
+      assign(socket, assigns)
       |> assign(:week_day_hour_id, week_day_hour_id(week_day_hour))
     }
   end
@@ -18,12 +18,11 @@ defmodule InterviewPlannerWeb.MeetingLive.WeekdayHourComponent do
         _params,
         %{
           assigns: %{
-            week_day_hour: week_day_hour,
-            week_day_hour_id: week_day_hour_id
+            week_day_hour: week_day_hour
           }
         } = socket
       ) do
-    Schedules.broadcast_change(:selected_hour, week_day_hour_id)
+    Schedules.broadcast_change(:selected_hour, week_day_hour)
 
     {
       :noreply,
