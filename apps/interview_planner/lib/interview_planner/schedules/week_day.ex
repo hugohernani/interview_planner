@@ -16,7 +16,12 @@ defmodule InterviewPlanner.Schedules.WeekDay do
 
   defp init_week_day(
          weekday_naive_dt,
-         %{start_time: %{hour: start_period}, end_time: %{hour: end_period}, step: p_step}
+         %{
+           start_time: %{hour: start_period},
+           end_time: %{hour: end_period},
+           step: p_step,
+           meetings: meetings
+         }
        ) do
     with week_day = Date.day_of_week(weekday_naive_dt) do
       %__MODULE__{
@@ -25,6 +30,7 @@ defmodule InterviewPlanner.Schedules.WeekDay do
         available_week_hours:
           week_day_hours(
             weekday_naive_dt,
+            meetings,
             start_period: start_period,
             end_period: end_period,
             interval_period: p_step
@@ -33,10 +39,12 @@ defmodule InterviewPlanner.Schedules.WeekDay do
     end
   end
 
-  defp week_day_hours(weekday_naive_dt, opts) do
+  defp week_day_hours(weekday_naive_dt, existing_meetings, opts) do
     adjust_interval_step(weekday_naive_dt, opts)
     |> Enum.map(fn naive_date_dt ->
-      set_week_day_hour(naive_date_dt)
+      set_week_day_hour(naive_date_dt,
+        available_week_hour: fetch_availability(existing_meetings, naive_date_dt)
+      )
     end)
   end
 
@@ -52,7 +60,13 @@ defmodule InterviewPlanner.Schedules.WeekDay do
     end
   end
 
-  defp set_week_day_hour(naive_date_dt, opts \\ []) do
+  defp fetch_availability(existing_meetings, naive_date_dt) do
+    Enum.any?(existing_meetings, fn %{scheduled_at: scheduled_at} ->
+      NaiveDateTime.compare(scheduled_at, naive_date_dt) == :eq
+    end)
+  end
+
+  defp set_week_day_hour(naive_date_dt, opts) do
     with available <- Keyword.get(opts, :available_week_hour, true) do
       %InterviewPlanner.Schedules.WeekDayHour{
         naive_date_time: naive_date_dt,
