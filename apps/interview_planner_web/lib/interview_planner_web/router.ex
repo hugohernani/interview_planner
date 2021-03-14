@@ -25,6 +25,13 @@ defmodule InterviewPlannerWeb.Router do
 
     live "/meetings/:id", MeetingLive.Show, :show
     live "/meetings/:id/show/edit", MeetingLive.Show, :edit
+
+    live "/week_planners", WeekPlannerLive.Index, :index
+    live "/week_planners/new", WeekPlannerLive.Index, :new
+    live "/week_planners/:id/edit", WeekPlannerLive.Index, :edit
+
+    live "/week_planners/:id", WeekPlannerLive.Show, :show
+    live "/week_planners/:id/show/edit", WeekPlannerLive.Show, :edit
   end
 
   # Other scopes may use custom stacks.

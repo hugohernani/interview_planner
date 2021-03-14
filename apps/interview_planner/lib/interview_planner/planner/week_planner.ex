@@ -3,9 +3,9 @@ defmodule InterviewPlanner.Planner.WeekPlanner do
   import Ecto.Changeset
 
   schema "week_planners" do
-    field :end_time, :naive_datetime
+    field :end_time, :time
     field :interval, :integer
-    field :start_time, :naive_datetime
+    field :start_time, :time
     field :step, :integer
     field :week_number, :integer
     field :year, :integer

@@ -1,0 +1,45 @@
+<h1>Listing Week planners</h1>
+
+<%= if @live_action in [:new, :edit] do %>
+  <%= live_modal @socket, InterviewPlannerWeb.WeekPlannerLive.FormComponent,
+    id: @week_planner.id || :new,
+    title: @page_title,
+    action: @live_action,
+    week_planner: @week_planner,
+    return_to: Routes.week_planner_index_path(@socket, :index) %>
+<% end %>
+
+<table>
+  <thead>
+    <tr>
+      <th>Week number</th>
+      <th>Year</th>
+      <th>Step</th>
+      <th>Interval</th>
+      <th>Start time</th>
+      <th>End time</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody id="week_planners">
+    <%= for week_planner <- @week_planners do %>
+      <tr id="week_planner-<%= week_planner.id %>">
+        <td><%= week_planner.week_number %></td>
+        <td><%= week_planner.year %></td>
+        <td><%= week_planner.step %></td>
+        <td><%= week_planner.interval %></td>
+        <td><%= week_planner.start_time %></td>
+        <td><%= week_planner.end_time %></td>
+
+        <td>
+          <span><%= live_redirect "Show", to: Routes.week_planner_show_path(@socket, :show, week_planner) %></span>
+          <span><%= live_patch "Edit", to: Routes.week_planner_index_path(@socket, :edit, week_planner) %></span>
+          <span><%= link "Delete", to: "#", phx_click: "delete", phx_value_id: week_planner.id, data: [confirm: "Are you sure?"] %></span>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<span><%= live_patch "New Week planner", to: Routes.week_planner_index_path(@socket, :new) %></span>

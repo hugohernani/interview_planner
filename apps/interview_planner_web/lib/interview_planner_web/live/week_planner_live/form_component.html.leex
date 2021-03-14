@@ -1,0 +1,36 @@
+<h2><%= @title %></h2>
+
+<%= f = form_for @changeset, "#",
+  id: "week_planner-form",
+  phx_target: @myself,
+  phx_change: "validate",
+  phx_submit: "save" %>
+
+  <%= label f, :week_number %>
+  <%= number_input f, :week_number %>
+  <%= error_tag f, :week_number %>
+
+  <%= label f, :year %>
+  <%= number_input f, :year %>
+  <%= error_tag f, :year %>
+
+  <%= label f, :step %>
+  <%= number_input f, :step %>
+  <%= error_tag f, :step %>
+
+  <%= label f, :interval %>
+  <%= number_input f, :interval %>
+  <%= error_tag f, :interval %>
+
+  <%= label f, :start_time %>
+  <%= time_select f, :start_time %>
+  <%= error_tag f, :start_time %>
+
+  <%= label f, :end_time %>
+  <%= time_select f, :end_time %>
+  <%= error_tag f, :end_time %>
+
+  <br />
+
+  <%= submit "Save", phx_disable_with: "Saving..." %>
+</form>

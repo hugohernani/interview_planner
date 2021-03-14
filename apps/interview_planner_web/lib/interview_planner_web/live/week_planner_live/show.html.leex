@@ -1,0 +1,47 @@
+<h1>Show Week planner</h1>
+
+<%= if @live_action in [:edit] do %>
+  <%= live_modal @socket, InterviewPlannerWeb.WeekPlannerLive.FormComponent,
+    id: @week_planner.id,
+    title: @page_title,
+    action: @live_action,
+    week_planner: @week_planner,
+    return_to: Routes.week_planner_show_path(@socket, :show, @week_planner) %>
+<% end %>
+
+<ul>
+
+  <li>
+    <strong>Week number:</strong>
+    <%= @week_planner.week_number %>
+  </li>
+
+  <li>
+    <strong>Year:</strong>
+    <%= @week_planner.year %>
+  </li>
+
+  <li>
+    <strong>Step:</strong>
+    <%= @week_planner.step %>
+  </li>
+
+  <li>
+    <strong>Interval:</strong>
+    <%= @week_planner.interval %>
+  </li>
+
+  <li>
+    <strong>Start time:</strong>
+    <%= @week_planner.start_time %>
+  </li>
+
+  <li>
+    <strong>End time:</strong>
+    <%= @week_planner.end_time %>
+  </li>
+
+</ul>
+
+<span><%= live_patch "Edit", to: Routes.week_planner_show_path(@socket, :edit, @week_planner), class: "button" %></span>
+<span><%= live_redirect "Back", to: Routes.week_planner_index_path(@socket, :index) %></span>

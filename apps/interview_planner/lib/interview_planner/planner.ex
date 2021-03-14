@@ -7,9 +7,23 @@ defmodule InterviewPlanner.Planner do
   alias InterviewPlanner.Repo
 
   alias InterviewPlanner.Planner.WeekPlanner
+  use Timex
 
   def list_week_planners do
     Repo.all(WeekPlanner)
+  end
+
+  def default_week_planner(curr_datetime) do
+    {year, week_number, _} = Timex.iso_triplet(curr_datetime)
+
+    %WeekPlanner{
+      year: year,
+      week_number: week_number,
+      step: 30,
+      interval: 10,
+      start_time: ~T[12:00:00],
+      end_time: ~T[20:00:01]
+    }
   end
 
   def get_week_planner!(id), do: Repo.get!(WeekPlanner, id)
