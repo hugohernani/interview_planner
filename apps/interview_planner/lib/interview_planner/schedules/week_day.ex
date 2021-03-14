@@ -6,9 +6,6 @@ defmodule InterviewPlanner.Schedules.WeekDay do
   alias Timex.Interval
 
   def week_days(%{year: p_year, week_number: p_week_number} = week_planner) do
-    IO.inspect(week_planner)
-    IO.inspect(Timex.from_iso_triplet({p_year, p_week_number, 1}))
-
     with week_date <- Timex.from_iso_triplet({p_year, p_week_number, 1}),
          first_day_of_week <- Date.beginning_of_week(week_date),
          last_work_day_of_week <- Date.end_of_week(first_day_of_week, :sunday) do

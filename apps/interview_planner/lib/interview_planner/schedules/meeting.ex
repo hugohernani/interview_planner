@@ -15,7 +15,8 @@ defmodule InterviewPlanner.Schedules.Meeting do
   @doc false
   def changeset(meeting, attrs) do
     meeting
-    |> cast(attrs, [:scheduled_at, :notes])
+    |> cast(attrs, [:scheduled_at, :week_planner_id, :notes])
     |> validate_required([:scheduled_at, :notes])
+    |> assoc_constraint(:week_planner)
   end
 end

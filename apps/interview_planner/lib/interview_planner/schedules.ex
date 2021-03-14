@@ -16,7 +16,10 @@ defmodule InterviewPlanner.Schedules do
     Repo.all(Meeting)
   end
 
-  def get_meeting!(id), do: Repo.get!(Meeting, id)
+  def get_meeting!(id) do
+    Repo.get!(Meeting, id)
+    |> Repo.preload(:week_planner)
+  end
 
   def create_meeting(attrs \\ %{}) do
     %Meeting{}

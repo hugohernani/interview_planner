@@ -16,7 +16,7 @@ defmodule InterviewPlannerWeb.MeetingLive.Index do
       %{id: week_planner_id} = week_planner ->
         {:ok,
          socket
-         |> assign(meetings: list_meetings(), week_planner_id: week_planner_id)
+         |> assign(meetings: list_meetings(week_planner), week_planner_id: week_planner_id)
          |> assign_new(:week_days, fn ->
            Schedules.week_days(week_planner)
          end)}
@@ -64,7 +64,11 @@ defmodule InterviewPlannerWeb.MeetingLive.Index do
     meeting = Schedules.get_meeting!(id)
     {:ok, _} = Schedules.delete_meeting(meeting)
 
-    {:noreply, assign(socket, :meetings, list_meetings())}
+    {:noreply, assign(socket, :meetings, list_meetings(meeting.week_planner))}
+  end
+
+  defp list_meetings(week_planner) do
+    week_planner.meetings
   end
 
   defp list_meetings do

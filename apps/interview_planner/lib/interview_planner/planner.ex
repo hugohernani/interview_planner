@@ -33,6 +33,7 @@ defmodule InterviewPlanner.Planner do
 
     WeekPlanner
     |> Repo.get_by(year: year, week_number: week_number)
+    |> Repo.preload(:meetings)
   end
 
   def create_week_planner(attrs \\ %{}) do
