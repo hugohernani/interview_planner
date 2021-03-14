@@ -1,20 +1,16 @@
-defmodule InterviewPlannerWeb.MeetingLive.WeekListingComponent do
-  use InterviewPlannerWeb, :live_component
+defmodule InterviewPlanner.Schedules.WeekDay do
+  defstruct day_name: 'Monday',
+            day: 1,
+            available_week_hours: [%InterviewPlanner.Schedules.WeekDayHour{}]
 
-  alias InterviewPlanner.{WeekDay, WeekDayHour}
   alias Timex.Interval
 
-  @impl true
-  def update(_assigns, socket) do
-    {:ok,
-     socket
-     |> assign(:available_week_days, available_week_days())}
-  end
-
-  defp available_week_days do
-    with current_date <- Date.utc_today(),
-         first_day_of_week <- Date.beginning_of_week(current_date),
-         last_work_day_of_week <- Date.end_of_week(current_date, :saturday) do
+  def week_days(week_date) do
+    with week_date <-
+           (Date.day_of_week(week_date) > 5 && %{week_date | day: week_date.day + 2}) ||
+             week_date,
+         first_day_of_week <- Date.beginning_of_week(week_date),
+         last_work_day_of_week <- Date.end_of_week(first_day_of_week, :sunday) do
       Interval.new(from: first_day_of_week, until: last_work_day_of_week)
       |> Enum.map(&init_week_day/1)
     end
@@ -22,7 +18,7 @@ defmodule InterviewPlannerWeb.MeetingLive.WeekListingComponent do
 
   defp init_week_day(weekday_naive_dt) do
     with week_day = Date.day_of_week(weekday_naive_dt) do
-      %WeekDay{
+      %__MODULE__{
         day_name: "#{Timex.day_name(week_day)}",
         day: week_day,
         available_week_hours: week_day_hours(weekday_naive_dt)
@@ -33,7 +29,7 @@ defmodule InterviewPlannerWeb.MeetingLive.WeekListingComponent do
   defp week_day_hours(weekday_naive_dt, opts \\ %{}) do
     adjust_interval_step(weekday_naive_dt, opts)
     |> Enum.map(fn naive_date_dt ->
-      init_week_hour(naive_date_dt)
+      set_week_day_hour(naive_date_dt)
     end)
   end
 
@@ -49,9 +45,9 @@ defmodule InterviewPlannerWeb.MeetingLive.WeekListingComponent do
     end
   end
 
-  defp init_week_hour(naive_date_dt, opts \\ %{}) do
+  defp set_week_day_hour(naive_date_dt, opts \\ %{}) do
     with available <- Map.get(opts, :available_week_hour, true) do
-      %WeekDayHour{
+      %InterviewPlanner.Schedules.WeekDayHour{
         naive_date_time: naive_date_dt,
         iso: NaiveDateTime.to_iso8601(naive_date_dt, :basic),
         formatted: Calendar.strftime(naive_date_dt, "%H %M"),

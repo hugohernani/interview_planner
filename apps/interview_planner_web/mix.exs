@@ -49,8 +49,7 @@ defmodule InterviewPlannerWeb.MixProject do
       {:gettext, "~> 0.11"},
       {:interview_planner, in_umbrella: true},
       {:jason, "~> 1.0"},
-      {:plug_cowboy, "~> 2.0"},
-      {:timex, "~> 3.0"}
+      {:plug_cowboy, "~> 2.0"}
     ]
   end
 

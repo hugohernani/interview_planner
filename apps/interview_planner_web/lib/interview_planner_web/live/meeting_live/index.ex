@@ -5,7 +5,20 @@ defmodule InterviewPlannerWeb.MeetingLive.Index do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, :meetings, list_meetings())}
+    Schedules.subscribe()
+
+    {:ok,
+     socket
+     |> assign(:meetings, [])
+     |> assign_new(:week_days, fn -> Schedules.week_days(Date.utc_today()) end)}
+  end
+
+  @impl true
+  def handle_info({Schedules, :selected_hour, week_day_hour_id}, socket) do
+    {
+      :noreply,
+      apply_action(socket, :new, week_day_hour_id)
+    }
   end
 
   @impl true
@@ -22,6 +35,7 @@ defmodule InterviewPlannerWeb.MeetingLive.Index do
   defp apply_action(socket, :new, _params) do
     socket
     |> assign(:page_title, "New Meeting")
+    |> assign(:live_action, :new)
     |> assign(:meeting, %Meeting{})
   end
 
