@@ -5,23 +5,30 @@ defmodule InterviewPlanner.Schedules.WeekDay do
 
   alias Timex.Interval
 
-  def week_days(week_date) do
-    with week_date <-
-           (Date.day_of_week(week_date) > 5 && %{week_date | day: week_date.day + 2}) ||
-             week_date,
+  def week_days(%{year: p_year, week_number: p_week_number} = week_planner) do
+    with week_date <- Timex.from_iso_triplet({p_year, p_week_number, 1}),
          first_day_of_week <- Date.beginning_of_week(week_date),
          last_work_day_of_week <- Date.end_of_week(first_day_of_week, :sunday) do
       Interval.new(from: first_day_of_week, until: last_work_day_of_week)
-      |> Enum.map(&init_week_day/1)
+      |> Enum.map(&init_week_day(&1, week_planner))
     end
   end
 
-  defp init_week_day(weekday_naive_dt) do
+  defp init_week_day(
+         weekday_naive_dt,
+         %{start_time: p_start_time, end_time: p_end_time, step: p_step} = week_planner
+       ) do
     with week_day = Date.day_of_week(weekday_naive_dt) do
       %__MODULE__{
         day_name: "#{Timex.day_name(week_day)}",
         day: week_day,
-        available_week_hours: week_day_hours(weekday_naive_dt)
+        available_week_hours:
+          week_day_hours(
+            weekday_naive_dt,
+            start_period: p_start_time,
+            end_period: p_end_time,
+            interval_period: p_step
+          )
       }
     end
   end

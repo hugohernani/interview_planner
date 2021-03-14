@@ -28,6 +28,13 @@ defmodule InterviewPlanner.Planner do
 
   def get_week_planner!(id), do: Repo.get!(WeekPlanner, id)
 
+  def get_week_planner_by_date(incoming_date) do
+    {year, week_number, _} = Timex.iso_triplet(incoming_date)
+
+    WeekPlanner
+    |> Repo.get_by(year: year, week_number: week_number)
+  end
+
   def create_week_planner(attrs \\ %{}) do
     %WeekPlanner{}
     |> WeekPlanner.changeset(attrs)

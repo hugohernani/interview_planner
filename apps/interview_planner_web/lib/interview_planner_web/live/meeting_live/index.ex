@@ -1,16 +1,24 @@
 defmodule InterviewPlannerWeb.MeetingLive.Index do
   use InterviewPlannerWeb, :live_view
 
-  alias InterviewPlanner.{Schedules, Schedules.Meeting}
+  alias InterviewPlanner.{Planner, Schedules, Schedules.Meeting}
 
   @impl true
   def mount(_params, _session, socket) do
     Schedules.subscribe()
 
-    {:ok,
-     socket
-     |> assign(:meetings, [])
-     |> assign_new(:week_days, fn -> Schedules.week_days(Date.utc_today()) end)}
+    curr_datetime = Date.utc_today()
+
+    case Planner.get_week_planner_by_date(curr_datetime) do
+      nil ->
+        {:ok, assign(socket, week_days: [], meetings: [])}
+
+      _ ->
+        {:ok,
+         socket
+         |> assign(:meetings, [])
+         |> assign_new(:week_days, fn -> Schedules.week_days(curr_datetime) end)}
+    end
   end
 
   @impl true
