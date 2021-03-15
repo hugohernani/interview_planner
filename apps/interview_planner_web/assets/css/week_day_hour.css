@@ -1,0 +1,16 @@
+.day-work-hour-selection{
+  cursor: pointer;
+}
+
+.day-work-hour-selection.idle{
+  color: rgb(2, 173, 169);
+}
+
+.day-work-hour-selection.locked{
+  color: rgb(180, 84, 84);
+}
+
+.day-work-hour-selection.unavailable{
+  color: rgb(57, 57, 57);
+  pointer-events: none;
+}

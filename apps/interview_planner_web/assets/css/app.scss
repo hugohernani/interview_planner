@@ -1,6 +1,8 @@
 /* This file is for your main application css. */
 @import "./phoenix.css";
 @import "../node_modules/nprogress/nprogress.css";
+@import "./week_day.css";
+@import "./week_day_hour.css";
 
 /* LiveView specific classes for your customizations */
 .phx-no-feedback.invalid-feedback,
@@ -88,4 +90,14 @@
   color: #a94442;
   display: block;
   margin: -1rem 0 2rem;
+}
+
+
+// headers
+h1.page-header{
+
+}
+
+.center{
+  text-align: center;
 }

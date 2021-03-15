@@ -7,9 +7,8 @@
   <div class='hours-grid'>
     <%= for week_day_hour <- @week_day.available_week_hours do %>
       <%= live_component @socket, InterviewPlannerWeb.MeetingLive.WeekdayHourComponent,
-        id: "iso_#{week_day_hour.iso}",
-        week_day_hour: week_day_hour,
-        available: week_day_hour.available %>
+        id: week_day_hour.iso_id,
+        week_day_hour: week_day_hour %>
     <% end %>
   </div>
 </div>

@@ -1,14 +1,8 @@
 defmodule InterviewPlanner.Schedules do
-  @moduledoc """
-  The Schedules context.
-  """
-
   import Ecto.Query, warn: false
   alias InterviewPlanner.Repo
 
   alias InterviewPlanner.Schedules.Meeting
-
-  @topic inspect(__MODULE__)
 
   defdelegate week_days(current_date), to: InterviewPlanner.Schedules.WeekDay
 
@@ -39,15 +33,5 @@ defmodule InterviewPlanner.Schedules do
 
   def change_meeting(%Meeting{} = meeting, attrs \\ %{}) do
     Meeting.changeset(meeting, attrs)
-  end
-
-  def subscribe do
-    Phoenix.PubSub.subscribe(InterviewPlanner.PubSub, @topic)
-  end
-
-  def broadcast_change(event, payload) do
-    Phoenix.PubSub.broadcast(InterviewPlanner.PubSub, @topic, {__MODULE__, event, payload})
-
-    {:ok, payload}
   end
 end

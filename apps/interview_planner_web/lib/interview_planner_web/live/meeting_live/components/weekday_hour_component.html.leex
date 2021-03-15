@@ -1,7 +1,6 @@
-<div class='hour-grid' id="<%= @week_day_hour_id %>">
-  <span phx-click="selected_hour"
+<div class='hour-grid' id="<%= @week_day_hour.iso_id %>">
+  <span class="day-work-hour-selection <%= @style_class %>" phx-click="selected_hour"
         phx-target="<%= @myself %>">
-    <%= @week_day_hour.formatted %>
-    <%= @week_day_hour.available %>
+    <strong><%= @week_day_hour.formatted %></strong>
   </span>
 </div>

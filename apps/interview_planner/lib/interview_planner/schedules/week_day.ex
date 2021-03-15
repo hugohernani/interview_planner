@@ -1,7 +1,9 @@
 defmodule InterviewPlanner.Schedules.WeekDay do
+  alias InterviewPlanner.Schedules.WeekDayHour
+
   defstruct day_name: 'Monday',
             day: 1,
-            available_week_hours: [%InterviewPlanner.Schedules.WeekDayHour{}]
+            available_week_hours: [%WeekDayHour{}]
 
   alias Timex.Interval
 
@@ -20,7 +22,8 @@ defmodule InterviewPlanner.Schedules.WeekDay do
            start_time: %{hour: start_period},
            end_time: %{hour: end_period},
            step: p_step,
-           meetings: meetings
+           meetings: meetings,
+           id: week_planner_id
          }
        ) do
     with week_day = Date.day_of_week(weekday_naive_dt) do
@@ -30,6 +33,7 @@ defmodule InterviewPlanner.Schedules.WeekDay do
         available_week_hours:
           week_day_hours(
             weekday_naive_dt,
+            week_planner_id,
             meetings,
             start_period: start_period,
             end_period: end_period,
@@ -39,11 +43,12 @@ defmodule InterviewPlanner.Schedules.WeekDay do
     end
   end
 
-  defp week_day_hours(weekday_naive_dt, existing_meetings, opts) do
+  defp week_day_hours(weekday_naive_dt, week_planner_id, existing_meetings, opts) do
     adjust_interval_step(weekday_naive_dt, opts)
     |> Enum.map(fn naive_date_dt ->
       set_week_day_hour(naive_date_dt,
-        available_week_hour: fetch_availability(existing_meetings, naive_date_dt)
+        available_week_hour: !fetch_availability(existing_meetings, naive_date_dt),
+        week_planner_id: week_planner_id
       )
     end)
   end
@@ -67,13 +72,12 @@ defmodule InterviewPlanner.Schedules.WeekDay do
   end
 
   defp set_week_day_hour(naive_date_dt, opts) do
-    with available <- Keyword.get(opts, :available_week_hour, true) do
-      %InterviewPlanner.Schedules.WeekDayHour{
-        naive_date_time: naive_date_dt,
-        iso: NaiveDateTime.to_iso8601(naive_date_dt, :basic),
-        formatted: Calendar.strftime(naive_date_dt, "%H %M"),
-        available: available
-      }
-    end
+    %WeekDayHour{
+      naive_date_time: naive_date_dt,
+      iso_id: "iso_" <> NaiveDateTime.to_iso8601(naive_date_dt, :basic),
+      formatted: Calendar.strftime(naive_date_dt, "%H %M"),
+      available: Keyword.get(opts, :available_week_hour, true),
+      week_planner_id: Keyword.get(opts, :week_planner_id, nil)
+    }
   end
 end
