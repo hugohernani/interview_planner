@@ -27,6 +27,15 @@ defmodule InterviewPlannerWeb.MeetingLive.FormComponent do
     save_meeting(socket, socket.assigns.action, meeting_params)
   end
 
+  def formated_scheduled(%{scheduled_at: scheduled_at, id: id}) do
+    formatted = Calendar.strftime(scheduled_at, "%A %Y-%m-%d at %H:%M")
+
+    case id do
+      nil -> "Scheduling for #{formatted}"
+      _ -> "Schduled for #{formatted}"
+    end
+  end
+
   defp save_meeting(socket, :new, meeting_params) do
     case Schedules.create_meeting(meeting_params) do
       {:ok, _meeting} ->
