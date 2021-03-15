@@ -18,6 +18,7 @@ defmodule InterviewPlanner.Planner do
 
     %WeekPlanner{
       year: year,
+      month: curr_datetime.month,
       week_number: week_number,
       step: 30,
       interval: 10,

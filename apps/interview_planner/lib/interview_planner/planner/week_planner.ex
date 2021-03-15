@@ -11,6 +11,7 @@ defmodule InterviewPlanner.Planner.WeekPlanner do
     field :step, :integer
     field :week_number, :integer
     field :year, :integer
+    field :month, :integer
     has_many :meetings, Meeting
 
     timestamps()
@@ -19,7 +20,7 @@ defmodule InterviewPlanner.Planner.WeekPlanner do
   @doc false
   def changeset(week_planner, attrs) do
     week_planner
-    |> cast(attrs, [:week_number, :year, :step, :interval, :start_time, :end_time])
-    |> validate_required([:week_number, :year, :step, :interval, :start_time, :end_time])
+    |> cast(attrs, [:week_number, :year, :month, :step, :interval, :start_time, :end_time])
+    |> validate_required([:week_number, :year, :month, :step, :interval, :start_time, :end_time])
   end
 end

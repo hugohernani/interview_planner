@@ -60,10 +60,16 @@ defmodule InterviewPlannerWeb.MeetingLive.Index do
     {:noreply, assign(socket, :meetings, list_meetings(meeting.week_planner))}
   end
 
+  def planner_heading(%{week_number: week_number, month: month, year: year}) do
+    "Available meeting hours for #{week_number}th of #{Timex.month_name(month)}, #{year}"
+  end
+
+  def planner_heading(nil), do: "There is no available Schedule for this time"
+
   defp mount_planning(socket, curr_datetime) do
     case Planner.get_week_planner_by_date(curr_datetime) do
       nil ->
-        {:ok, assign(socket, week_days: [], meetings: [])}
+        {:ok, assign(socket, week_days: [], meetings: [], week_planner: nil)}
 
       %{id: week_planner_id} = week_planner ->
         MeetingLive.subscribe(week_planner_id)
@@ -71,6 +77,7 @@ defmodule InterviewPlannerWeb.MeetingLive.Index do
         {:ok,
          socket
          |> assign(meetings: list_meetings(week_planner), week_planner_id: week_planner_id)
+         |> assign(:week_planner, week_planner)
          |> assign_new(:week_days, fn ->
            Schedules.week_days(week_planner)
          end)}

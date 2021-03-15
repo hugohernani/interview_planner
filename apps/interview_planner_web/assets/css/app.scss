@@ -94,8 +94,13 @@
 
 
 // headers
-h1.page-header{
+.page-header{
+  font-size: 1.3em;
+  font-weight: bold;
+}
 
+.meeting-heading{
+  text-align: center;
 }
 
 .center{

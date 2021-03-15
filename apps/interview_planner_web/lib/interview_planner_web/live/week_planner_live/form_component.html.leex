@@ -30,6 +30,8 @@
   <%= time_select f, :end_time %>
   <%= error_tag f, :end_time %>
 
+  <%= hidden_input f, :month %>
+
   <br />
 
   <%= submit "Save", phx_disable_with: "Saving..." %>
