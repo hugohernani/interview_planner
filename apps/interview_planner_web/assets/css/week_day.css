@@ -6,3 +6,15 @@
   flex: auto;
   text-align: center;
 }
+
+.week-day .day-header{
+  margin: 0px 0px 10px 0px;
+}
+
+.week-day .day-header span{
+  display: block;
+}
+
+.week-day .day-header span.day-name{
+  font-size: 1.3em;
+}

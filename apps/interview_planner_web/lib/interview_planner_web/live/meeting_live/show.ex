@@ -17,5 +17,4 @@ defmodule InterviewPlannerWeb.MeetingLive.Show do
   end
 
   defp page_title(:show), do: "Show Meeting"
-  defp page_title(:edit), do: "Edit Meeting"
 end

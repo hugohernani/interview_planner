@@ -5,4 +5,8 @@ defmodule InterviewPlannerWeb.MeetingLive.WeekdayComponent do
   def update(assigns, socket) do
     {:ok, assign(socket, assigns)}
   end
+
+  def month_day(%{month: month, day: day}) do
+    "#{month} / #{day}"
+  end
 end

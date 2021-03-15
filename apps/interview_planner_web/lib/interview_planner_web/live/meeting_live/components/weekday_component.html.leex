@@ -1,8 +1,11 @@
 <div class='week-day'>
   <div class='day-header'>
-    <h3>
+    <span class="day-name">
       <%= @week_day.day_name %>
-    </h3>
+    </span>
+    <span class="month-day">
+      <%= month_day(@week_day) %>
+    </span>
   </div>
   <div class='hours-grid'>
     <%= for week_day_hour <- @week_day.available_week_hours do %>

@@ -27,19 +27,6 @@ defmodule InterviewPlannerWeb.MeetingLive.FormComponent do
     save_meeting(socket, socket.assigns.action, meeting_params)
   end
 
-  defp save_meeting(socket, :edit, meeting_params) do
-    case Schedules.update_meeting(socket.assigns.meeting, meeting_params) do
-      {:ok, _meeting} ->
-        {:noreply,
-         socket
-         |> put_flash(:info, "Meeting updated successfully")
-         |> push_redirect(to: socket.assigns.return_to)}
-
-      {:error, %Ecto.Changeset{} = changeset} ->
-        {:noreply, assign(socket, :changeset, changeset)}
-    end
-  end
-
   defp save_meeting(socket, :new, meeting_params) do
     case Schedules.create_meeting(meeting_params) do
       {:ok, _meeting} ->

@@ -3,6 +3,7 @@ defmodule InterviewPlanner.Schedules.WeekDay do
 
   defstruct day_name: 'Monday',
             day: 1,
+            month: 1,
             available_week_hours: [%WeekDayHour{}]
 
   alias Timex.Interval
@@ -29,7 +30,8 @@ defmodule InterviewPlanner.Schedules.WeekDay do
     with week_day = Date.day_of_week(weekday_naive_dt) do
       %__MODULE__{
         day_name: "#{Timex.day_name(week_day)}",
-        day: week_day,
+        day: weekday_naive_dt.day,
+        month: weekday_naive_dt.month,
         available_week_hours:
           week_day_hours(
             weekday_naive_dt,
